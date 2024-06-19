@@ -1,6 +1,5 @@
 import os 
 import sys
-import json
 
 class Platforms:
     WIN = "win32",
@@ -12,7 +11,7 @@ def help():
     sys.exit(-1)
 
 def save(args: list[str]):
-    shortcut = None
+    shortcut = " "
     if "-s" in args: 
         index = args.index("-s")
         if len(args) <= index + 1:
@@ -23,11 +22,16 @@ def save(args: list[str]):
     config_file = os.path.join(script_path, "config.txt")
     if (not os.path.exists(config_file)):
         with open(config_file, "w") as fobj:
-            fobj.write(f"{wd}:{(shortcut if shortcut is not None else " ")}")
+            content = f"{wd}:{shortcut}"
+            fobj.write(content)
     else:
-        with open(config_file, "+w") as fobj:
+        content = None
+        with open(config_file, "r") as fobj:
             content = fobj.readlines()
-            new_content = [f"{wd}:{(shortcut if shortcut is not None else " ")}"]
+
+        with open(config_file, "w") as fobj:
+            new = f"{wd}:{shortcut}"
+            new_content = [new]
             new_content.extend(content)
             text = ""
             first = True
@@ -70,7 +74,7 @@ def backward(args: list[str]):
             help()
         count = int(args[index + 1])
     history = read_history()
-    os.chdir(history[count])
+    print(history[count])
     update_history(history[count])
 
 def go(args: list[str]):
@@ -81,9 +85,9 @@ def go(args: list[str]):
         with open(config_file, "r")  as fobj:
             content = fobj.readlines()
             for i in content:
-                splitted = i.split(":")
-                if splitted[1] != " " and going_to==splitted[1]:
-                    os.chdir(splitted[0].strip())
+                splitted = i.rsplit(":", 1)
+                if splitted[1].strip() != " " and going_to==splitted[1].strip():
+                    print(splitted[0].strip())
                     update_history(splitted[0].strip())
                 else:
                     pass 
