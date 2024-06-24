@@ -25,9 +25,12 @@ def save(args: list[str]):
             content = f"{wd}:{shortcut}"
             fobj.write(content)
     else:
-        content = None
+        content = []
         with open(config_file, "r") as fobj:
-            content = fobj.readlines()
+            for i in fobj.readlines():
+                if i.strip() == "": 
+                    continue
+                content.append(i.strip())
 
         with open(config_file, "w") as fobj:
             new = f"{wd}:{shortcut}"
@@ -61,6 +64,13 @@ def read_history() -> list[str]:
     else:
         with open(history_file, "r") as fobj:
             return [line.strip() for line in fobj.readlines()]
+
+def print_commands(args):
+    script_path = os.path.dirname(os.path.realpath(__file__))
+    config_file = os.path.join(script_path, "config.txt")
+    with open(config_file, "r") as fobj:
+        for line in fobj.readlines():
+            print(line.strip())
 
 def print_history(args):
     for line in read_history():
@@ -96,7 +106,8 @@ keywords = {
     'b': backward,
     's': save,
     'h': print_history,
-    'g': go
+    'g': go,
+    'c': print_commands
 }
 
 def main(args: list[str]):
