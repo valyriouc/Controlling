@@ -1,0 +1,1 @@
+jumper.py g $args[0] | Set-Location

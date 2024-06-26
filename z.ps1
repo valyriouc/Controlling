@@ -1,1 +1,1 @@
-jumper.py b | cd
+jumper.py b | Set-Location

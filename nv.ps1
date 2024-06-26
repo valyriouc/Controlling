@@ -1,1 +1,0 @@
-jumper.py g $args[0] | cd
