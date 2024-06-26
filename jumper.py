@@ -50,7 +50,9 @@ def save(args: list[str]):
 def update_history(path: str):
     history = []
     history.append(path)
-    history.extend(read_history())
+    old = read_history()
+    for i in range(0, 40):
+        history.append(old[i])
     history_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), "history.txt")
     with open(history_file, "w") as fobj:
         for i in history:
