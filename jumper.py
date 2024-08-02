@@ -51,7 +51,7 @@ def update_history(path: str):
     history = []
     history.append(path)
     old = read_history()
-    for i in range(0, 40):
+    for i in range(0, 40 if len(old) >= 40 else len(old)):
         history.append(old[i])
     history_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), "history.txt")
     with open(history_file, "w") as fobj:
